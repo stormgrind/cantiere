@@ -1,0 +1,6 @@
+[submodule "lib/net-ssh"]
+	path = lib/net-ssh
+	url = git://github.com/jamis/net-ssh.git
+[submodule "lib/net-sftp"]
+	path = lib/net-sftp
+	url = git://github.com/jamis/net-sftp.git

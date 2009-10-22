@@ -1,0 +1,6 @@
+build
+*.swp
+sources-cache
+specs
+log
+.idea
