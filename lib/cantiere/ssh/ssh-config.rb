@@ -36,18 +36,18 @@ module Cantiere
     end
 
     def validate
-      raise ValidationError, "Specified configuration file (#{@config.config_file}) doesn't exists. #{DEFAULT_HELP_TEXT[:general]}" unless File.exists?( @config.config_file )
-      raise ValidationError, "No 'ssh' section in config file in configuration file '#{@config.config_file}'. #{DEFAULT_HELP_TEXT[:general]}" if @config.release.ssh.nil?
+      raise ValidationError, "Specified configuration file (#{CONFIG_FILE}) doesn't exists. #{DEFAULT_HELP_TEXT[:general]}" unless File.exists?( CONFIG_FILE )
+      raise ValidationError, "No 'ssh' section in config file in configuration file '#{CONFIG_FILE}'. #{DEFAULT_HELP_TEXT[:general]}" if @config.data['ssh'].nil?
 
       # we need only ssh section
-      @cfg = @config.release.ssh
+      @cfg = @config.data['ssh']
 
-      raise ValidationError, "Host not specified in configuration file '#{@config.config_file}'. #{DEFAULT_HELP_TEXT[:general]}" if @cfg['host'].nil?
-      raise ValidationError, "Username not specified in configuration file '#{@config.config_file}'. #{DEFAULT_HELP_TEXT[:general]}" if @cfg['username'].nil?
+      raise ValidationError, "Host not specified in configuration file '#{CONFIG_FILE}' in ssh section. #{DEFAULT_HELP_TEXT[:general]}" if @cfg['host'].nil?
+      raise ValidationError, "Username not specified in configuration file '#{CONFIG_FILE}' in ssh section. #{DEFAULT_HELP_TEXT[:general]}" if @cfg['username'].nil?
 
-      @options['host']      = @config.release.ssh['host']
-      @options['username']  = @config.release.ssh['username']
-      @options['password']  = @config.release.ssh['password']
+      @options['host']      = @cfg['host']
+      @options['username']  = @cfg['username']
+      @options['password']  = @cfg['password']
     end
 
     attr_reader :options

@@ -2,5 +2,6 @@ build
 *.swp
 sources-cache
 specs
+src
 log
 .idea

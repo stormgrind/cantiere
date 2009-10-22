@@ -77,6 +77,8 @@ module Cantiere
           end
         end
 
+        puts
+
         nb = 0
 
         files.each do |key, local|
@@ -95,7 +97,7 @@ module Cantiere
               remote_md5_sum  = @ssh.exec!( "md5sum #{remote} | awk '{ print $1 }'" ).strip
 
               if (local_md5_sum.eql?( remote_md5_sum ))
-                @log.info "#{nb_of} #{name}: files are identical (md5sum: #{local_md5_sum}), skipping..."
+                puts "#{nb_of} #{name}: files are identical (md5sum: #{local_md5_sum}), skipping..."
                 next
               end
             end

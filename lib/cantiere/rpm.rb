@@ -66,7 +66,6 @@ module Cantiere
       file @rpm_file => [ 'rpm:topdir', @spec_file ] do
         @log.info "Building package '#{@rpm_file_basename}'..."
         build_source_dependencies( @rpm_file, @rpm_version, @rpm_release )
-        puts "a"
         build_rpm
         @log.info "Package '#{@rpm_file_basename}' was built successfully."
       end

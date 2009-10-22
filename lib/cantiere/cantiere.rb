@@ -27,8 +27,6 @@ require 'cantiere/rpm-utils'
 require 'cantiere/gpg-sign'
 require 'cantiere/validator/config-validator'
 
-$stderr.reopen("/dev/null")
-
 module Cantiere
   class Cantiere
     def initialize( project_config = Hash.new )
