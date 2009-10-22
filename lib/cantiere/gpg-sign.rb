@@ -36,7 +36,7 @@ module Cantiere
       task 'rpm:sign:all:srpms' => [ 'rpm:all' ] do
         sign_srpms
       end
-
+                                     
       task 'rpm:sign:all:rpms' => [ 'rpm:all' ] do
         sing_rpms
       end
@@ -57,7 +57,8 @@ module Cantiere
       @log.info "Signing #{type}..."
 
       begin
-        @config.helper.validate_gpg_password
+        raise ValidationError, "You have no GPG password specified in Cantiere config file (#{CONFIG_FILE})." if @config.data['gpg_password'].nil?
+        #@config.helper.validate_gpg_password
         @exec_helper.execute( command )
       rescue => e
         @log.fatal "An error occured, some #{type} may be not signed. Possible errors: key exists?, wrong passphrase, expect package installed?, %_gpg_name in ~/.rpmmacros set?"

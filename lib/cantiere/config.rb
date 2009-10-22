@@ -22,8 +22,10 @@ require 'cantiere/defaults'
 require 'ostruct'
 
 module Cantiere
+  CONFIG_FILE = "#{ENV['HOME']}/.cantiere/config"
+
   class Config
-    RELEASE_FILE = '/etc/redhat-release'
+    RELEASE_FILE = "/etc/redhat-release"
 
     def initialize( project_config = Hash.new )
 
@@ -34,47 +36,54 @@ module Cantiere
       @version.release = project_config[:release] || DEFAULT_PROJECT_CONFIG[:release]
 
       @dir = OpenStruct.new
-      @dir.root             = `pwd`.strip
-      @dir.build            = project_config[:dir_build] || DEFAULT_PROJECT_CONFIG[:dir_build]
-      @dir.top              = project_config[:dir_top] || "#{@dir.build}/topdir"
-      @dir.src_cache        = project_config[:dir_sources_cache] || DEFAULT_PROJECT_CONFIG[:dir_sources_cache]
-      @dir.rpms_cache       = project_config[:dir_rpms_cache] || DEFAULT_PROJECT_CONFIG[:dir_rpms_cache]
-      @dir.specs            = project_config[:dir_specs] || DEFAULT_PROJECT_CONFIG[:dir_specs]
-      @dir.appliances       = project_config[:dir_appliances] || DEFAULT_PROJECT_CONFIG[:dir_appliances]
-      @dir.src              = project_config[:dir_src] || DEFAULT_PROJECT_CONFIG[:dir_src]
-      @dir.kickstarts       = project_config[:dir_kickstarts] || DEFAULT_PROJECT_CONFIG[:dir_kickstarts]
+      @dir.root = `pwd`.strip
+      @dir.build = project_config[:dir_build] || DEFAULT_PROJECT_CONFIG[:dir_build]
+      @dir.top = project_config[:dir_top] || "#{@dir.build}/topdir"
+      @dir.src_cache = project_config[:dir_sources_cache] || DEFAULT_PROJECT_CONFIG[:dir_sources_cache]
+      @dir.rpms_cache = project_config[:dir_rpms_cache] || DEFAULT_PROJECT_CONFIG[:dir_rpms_cache]
+      @dir.specs = project_config[:dir_specs] || DEFAULT_PROJECT_CONFIG[:dir_specs]
+      @dir.appliances = project_config[:dir_appliances] || DEFAULT_PROJECT_CONFIG[:dir_appliances]
+      @dir.src = project_config[:dir_src] || DEFAULT_PROJECT_CONFIG[:dir_src]
+      @dir.kickstarts = project_config[:dir_kickstarts] || DEFAULT_PROJECT_CONFIG[:dir_kickstarts]
 
       # TODO better way to get this directory
-      @dir.base         = "#{File.dirname( __FILE__ )}/../.."
-      @dir.tmp          = "#{@dir.build}/tmp"
+      @dir.base = "#{File.dirname( __FILE__ )}/../.."
+      @dir.tmp = "#{@dir.build}/tmp"
 
-      @arch             = (-1.size) == 8 ? "x86_64" : "i386"
-      @os               = OpenStruct.new
+      @arch = (-1.size) == 8 ? "x86_64" : "i386"
+      @os = OpenStruct.new
 
       if File.exists?( RELEASE_FILE )
         release_match = File.read( RELEASE_FILE ).match(/^(.*) release ([\d\.]+) \((.*)\)$/)
-        @os.full_name  = release_match[1]
+        @os.full_name = release_match[1]
 
         case @os.full_name
           when /^Red Hat Enterprise Linux(.*)/ then
-            @os.name            = "rhel"
-            @os.package_suffix  = 'el'
+            @os.name = "rhel"
+            @os.package_suffix = 'el'
           when /^Fedora$/ then
-            @os.name            = "fedora"
-            @os.package_suffix  = 'f'
+            @os.name = "fedora"
+            @os.package_suffix = 'f'
         end
 
-        @os.version       = release_match[2]
-        @os.main_version  = @os.version.match( /^([\d]+)[\.]?(.*)?$/ )[1]
-        @os.package_suffix  = @os.package_suffix + @os.main_version
-        @os.code_name     = release_match[3]
+        @os.version = release_match[2]
+        @os.main_version = @os.version.match( /^([\d]+)[\.]?(.*)?$/ )[1]
+        @os.package_suffix = @os.package_suffix + @os.main_version
+        @os.code_name = release_match[3]
       else
         raise "OS'es other than Fedora or Red Hat are currently unsupported"
       end
 
-      @build_arch       = ENV['CANTIERE_ARCH'].nil? ? @arch : ENV['CANTIERE_ARCH']
-      @os_name          = @os.name  #ENV['CANTIERE_OS_NAME'].nil? ? APPLIANCE_DEFAULTS['os_name'] : ENV['CANTIERE_OS_NAME']
-      @os_version       = @os.version #ENV['CANTIERE_OS_VERSION'].nil? ? APPLIANCE_DEFAULTS['os_version'] : ENV['CANTIERE_OS_VERSION']
+      if File.exists?( CONFIG_FILE )
+        @data = YAML.load_file( CONFIG_FILE )
+        raise "Your config file (#{CONFIG_FILE}) has incorrect format. Please correct it." if @data.nil?
+      else
+        @data = {}
+      end
+
+      @build_arch = ENV['CANTIERE_ARCH'].nil? ? @arch : ENV['CANTIERE_ARCH']
+      @os_name = @os.name #ENV['CANTIERE_OS_NAME'].nil? ? APPLIANCE_DEFAULTS['os_name'] : ENV['CANTIERE_OS_NAME']
+      @os_version = @os.version #ENV['CANTIERE_OS_VERSION'].nil? ? APPLIANCE_DEFAULTS['os_version'] : ENV['CANTIERE_OS_VERSION']
     end
 
     attr_reader :name
@@ -85,6 +94,7 @@ module Cantiere
     attr_reader :os_version
     attr_reader :os
     attr_reader :dir
+    attr_reader :data
 
     def os_path
       "#{@os.name}/#{@os.version}"

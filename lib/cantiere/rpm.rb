@@ -18,8 +18,6 @@
 # Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 
-require 'cantiere/rpm-gpg-sign'
-
 module Cantiere
   class RPM < Rake::TaskLib
 
@@ -57,8 +55,6 @@ module Cantiere
 
       RPM.provides[@simple_name]            = "#{@simple_name}-#{@rpm_version}-#{@rpm_release}"
       RPM.provides_rpm_path[@simple_name]   = @rpm_file
-
-      RPMGPGSign.new( @config, @spec_file, @rpm_file )
 
       define_tasks
     end
@@ -161,7 +157,6 @@ module Cantiere
     def build_source_dependencies( rpm_file, version=nil, release=nil)
       File.open( @spec_file).each_line do |line|
         line.gsub!( /#.*$/, '' )
-        puts line
         if ( line =~ /Requires:(.*)/ )
           requirement = $1.strip
           handle_requirement( rpm_file, requirement )
