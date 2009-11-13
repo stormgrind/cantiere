@@ -31,14 +31,14 @@ module Cantiere
           "fedora" => [ "11", "rawhide" ]
   }
 
-  STABLE_RELEASES = {
+  LATEST_STABLE_RELEASES = {
           "fedora" => "11",
           "rhel" => "5"
   }
 
   APPLIANCE_DEFAULTS = {
           "os_name" => "fedora",
-          "os_version" => STABLE_RELEASES['fedora'],
+          "os_version" => LATEST_STABLE_RELEASES['fedora'],
           "disk_size" => 2,
           "mem_size" => 1024,
           "network_name" => "NAT",
