@@ -38,11 +38,11 @@ end
 
 module Cantiere
   class RakeHelper
-    def initialize
+    def initialize( config = nil )
       begin
         LOG.debug "Running new Rake session..."
 
-        Cantiere.new
+        Cantiere.new( config )
       rescue ValidationError => e
         LOG.fatal "ValidationError: #{e.message}."
         abort

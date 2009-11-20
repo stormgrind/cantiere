@@ -29,10 +29,10 @@ require 'cantiere/validator/config-validator'
 
 module Cantiere
   class Cantiere
-    def initialize( project_config = Hash.new )
+    def initialize( config, project_config = Hash.new )
       @log = LOG
 
-      @config = Config.new( project_config )
+      @config = config.nil? ? Config.new( project_config ) : config
 
       ConfigValidator.new( @config ).validate
 
@@ -48,6 +48,8 @@ module Cantiere
           RPM.new( @config, spec_file )
         end
       end
+
+      @config
     end
   end
 end
