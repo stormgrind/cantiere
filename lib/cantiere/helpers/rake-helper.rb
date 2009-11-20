@@ -22,11 +22,11 @@ require 'cantiere/cantiere'
 
 module Rake
   class Task
-    alias_method :execute_original, :execute
+    alias_method :execute_original_cantiere, :execute
 
     def execute( args=nil )
       begin
-        execute_original( args )
+        execute_original_cantiere( args )
       rescue => e
         Cantiere::LOG.fatal e
         Cantiere::LOG.fatal e.message
