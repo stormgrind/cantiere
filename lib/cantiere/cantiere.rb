@@ -48,8 +48,6 @@ module Cantiere
           RPM.new( @config, spec_file )
         end
       end
-
-      @config
     end
   end
 end

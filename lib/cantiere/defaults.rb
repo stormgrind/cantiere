@@ -28,7 +28,7 @@ module Cantiere
   # here are global variables
   SUPPORTED_ARCHES = [ "i386", "x86_64" ]
   SUPPORTED_OSES = {
-          "fedora" => [ "11", "rawhide" ]
+          "fedora" => [ "12", "11", "rawhide" ]
   }
 
   LATEST_STABLE_RELEASES = {
