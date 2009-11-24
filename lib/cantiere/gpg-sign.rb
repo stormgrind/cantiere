@@ -46,18 +46,18 @@ module Cantiere
     end
 
     def sign_srpms
-      validate_and_sign( "#{@config.dir.base}/extras/sign-rpms #{@config.data['gpg_password']} #{@config.dir.top}/#{APPLIANCE_DEFAULTS['os_name']}/#{APPLIANCE_DEFAULTS['os_version']}/SRPMS/*.src.rpm > /dev/null 2>&1", "SRPMs" )
+      validate_and_sign( "#{@config.dir.base}/extras/sign-rpms #{@config.definition['gpg_password']} #{@config.dir.top}/#{APPLIANCE_DEFAULTS['os_name']}/#{APPLIANCE_DEFAULTS['os_version']}/SRPMS/*.src.rpm > /dev/null 2>&1", "SRPMs" )
     end
 
     def sing_rpms
-      validate_and_sign( "#{@config.dir.base}/extras/sign-rpms #{@config.data['gpg_password']} #{@config.dir.top}/#{@config.os_path}/RPMS/*/*.rpm > /dev/null 2>&1", "RPMs" )
+      validate_and_sign( "#{@config.dir.base}/extras/sign-rpms #{@config.definition['gpg_password']} #{@config.dir.top}/#{@config.os_path}/RPMS/*/*.rpm > /dev/null 2>&1", "RPMs" )
     end
 
     def validate_and_sign( command, type )
       @log.info "Signing #{type}..."
 
       begin
-        raise ValidationError, "You have no GPG password specified in Cantiere config file (#{CONFIG_FILE})." if @config.data['gpg_password'].nil?
+        raise ValidationError, "You have no GPG password specified in Cantiere config file (#{CONFIG_FILE})." if @config.definition['gpg_password'].nil?
         #@config.helper.validate_gpg_password
         @exec_helper.execute( command )
       rescue => e
