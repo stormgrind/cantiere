@@ -75,10 +75,10 @@ module Cantiere
       end
 
       if File.exists?( CONFIG_FILE )
-        @definition = YAML.load_file( CONFIG_FILE )
-        raise "Your config file (#{CONFIG_FILE}) has incorrect format. Please correct it." if @definition.nil?
+        @data = YAML.load_file( CONFIG_FILE )
+        raise "Your config file (#{CONFIG_FILE}) has incorrect format. Please correct it." if @data.nil?
       else
-        @definition = {}
+        @data = {}
       end
 
       @build_arch = ENV['CANTIERE_ARCH'].nil? ? @arch : ENV['CANTIERE_ARCH']
