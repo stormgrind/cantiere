@@ -29,7 +29,7 @@ module Cantiere
 
     # TODO this is not good, remove this
     def validate_gpg_password
-      raise ValidationError, "You have no GPG password specified in JBoss Cloud config file." if @config.data['gpg_password'].nil?
+      raise ValidationError, "You have no GPG password specified in JBoss Cloud config file." if @config.definition['gpg_password'].nil?
     end
 
   end

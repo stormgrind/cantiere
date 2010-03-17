@@ -82,8 +82,8 @@ module Cantiere
       end
 
       @build_arch = ENV['CANTIERE_ARCH'].nil? ? @arch : ENV['CANTIERE_ARCH']
-      @os_name = @os.name #ENV['CANTIERE_OS_NAME'].nil? ? APPLIANCE_DEFAULTS['os_name'] : ENV['CANTIERE_OS_NAME']
-      @os_version = @os.version #ENV['CANTIERE_OS_VERSION'].nil? ? APPLIANCE_DEFAULTS['os_version'] : ENV['CANTIERE_OS_VERSION']
+      @os_name = ENV['CANTIERE_OS_NAME'].nil? ? @os.name : ENV['CANTIERE_OS_NAME']
+      @os_version = ENV['CANTIERE_OS_VERSION'].nil? ? @os.version : ENV['CANTIERE_OS_VERSION']
     end
 
     attr_reader :name

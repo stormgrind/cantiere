@@ -32,15 +32,19 @@ module Cantiere
       @options['sftp_overwrite']            = false
       @options['sftp_default_permissions']  = 0644
 
+      raise ValidationError, "Specified configuration file (#{CONFIG_FILE}) doesn't exists. #{DEFAULT_HELP_TEXT[:general]}" unless File.exists?( CONFIG_FILE )
+
+      @config_file = YAML.load_file( CONFIG_FILE )
+
       validate
     end
 
     def validate
-      raise ValidationError, "Specified configuration file (#{CONFIG_FILE}) doesn't exists. #{DEFAULT_HELP_TEXT[:general]}" unless File.exists?( CONFIG_FILE )
-      raise ValidationError, "No 'ssh' section in config file in configuration file '#{CONFIG_FILE}'. #{DEFAULT_HELP_TEXT[:general]}" if @config.data['ssh'].nil?
+      raise ValidationError, "Your config file (#{CONFIG_FILE}) has incorrect format. Please correct it." if @config_file.nil?
+      raise ValidationError, "No 'ssh' section in config file in configuration file '#{CONFIG_FILE}'. #{DEFAULT_HELP_TEXT[:general]}" if @config_file['ssh'].nil?
 
       # we need only ssh section
-      @cfg = @config.data['ssh']
+      @cfg = @config_file['ssh']
 
       raise ValidationError, "Host not specified in configuration file '#{CONFIG_FILE}' in ssh section. #{DEFAULT_HELP_TEXT[:general]}" if @cfg['host'].nil?
       raise ValidationError, "Username not specified in configuration file '#{CONFIG_FILE}' in ssh section. #{DEFAULT_HELP_TEXT[:general]}" if @cfg['username'].nil?
