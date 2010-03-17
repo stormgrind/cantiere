@@ -88,11 +88,12 @@ module Cantiere
     end
 
     def substitute_defined_data(str, version=nil, release=nil)
+
       substitutes = {}
 
       File.open( @spec_file).each_line do |line|
-        match = line.match(/^%define (.*) (.*)$/)
-        substitutes[match[1].strip] = match[2].strip  if match
+        match = line.match(/^%define (\w+) (.*)$/)
+        substitutes[match[1].strip] = match[2].strip if match
       end
 
       s = str.dup
