@@ -115,7 +115,7 @@ module Cantiere
 
       @log.debug "Handling source '#{source}'..."
 
-      if ( source =~ %r{http://} )
+      if ( source =~ %r{http://} or source =~ %r{ftp://} )
         handle_remote_source( rpm_file, source )
       else
         handle_local_source( rpm_file, source )
@@ -144,12 +144,17 @@ module Cantiere
 
       file rpm_file => [ source_file ]
 
-      if ( ! File.exist?( source_cache_file ) )
-        FileUtils.mkdir_p( @config.dir.src_cache )
-        @exec_helper.execute( "wget #{source} -O #{source_cache_file}" )
-      end
+      begin
+        if ( ! File.exist?( source_cache_file ) )
+          FileUtils.mkdir_p( @config.dir.src_cache )
+          @exec_helper.execute( "wget #{source} -O #{source_cache_file}" )
+        end
 
-      FileUtils.cp( source_cache_file, source_file )
+        FileUtils.cp( source_cache_file, source_file )
+      rescue
+        FileUtils.rm_rf( source_cache_file )
+        FileUtils.rm_rf( source_file )
+      end
 
       raise "Source '#{source}' not handled!" unless File.exists?( source_file )
     end
