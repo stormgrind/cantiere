@@ -97,7 +97,7 @@ module Cantiere
     attr_reader :data
 
     def os_path
-      "#{@os.name}/#{@os.version}"
+      "#{@os.name}/#{@os.main_version}"
     end
 
     def build_path
