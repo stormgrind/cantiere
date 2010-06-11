@@ -58,7 +58,7 @@ module Cantiere
         @os.full_name = release_match[1]
 
         case @os.full_name
-          when /^Red Hat Enterprise Linux(.*)/ then
+          when /^Red Hat Enterprise Linux(.*)/, /^CentOS/ then
             @os.name = "rhel"
             @os.package_suffix = 'el'
           when /^Fedora$/ then
