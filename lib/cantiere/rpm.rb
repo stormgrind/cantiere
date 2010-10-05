@@ -75,7 +75,7 @@ module Cantiere
 
     def build_rpm
       Dir.chdir( File.dirname( @spec_file ) ) do
-        @exec_helper.execute( "rpmbuild --define '_topdir #{@config.dir.root}/#{@config.dir.top}/#{@config.os_path}' --target #{@rpm_arch} -ba #{@simple_name}.spec" )
+        @exec_helper.execute( "rpmbuild --define '_tmppath #{@config.dir.root}/#{@config.dir.build}/tmp' --define '_topdir #{@config.dir.root}/#{@config.dir.top}/#{@config.os_path}' --target #{@rpm_arch} -ba #{@simple_name}.spec" )
       end
 
       Rake::Task[ 'rpm:repodata:force' ].reenable
