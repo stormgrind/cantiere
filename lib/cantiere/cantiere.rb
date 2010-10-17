@@ -43,7 +43,7 @@ module Cantiere
       RPMUtils.new( @config )
       GPGSign.new( @config )
 
-      [ "specs/*.spec" ].each do |spec_file_dir|
+      [ "specs/**/*.spec" ].each do |spec_file_dir|
         Dir[ spec_file_dir ].each do |spec_file|
           RPM.new( @config, spec_file )
         end
