@@ -147,7 +147,7 @@ module Cantiere
       begin
         if ( ! File.exist?( source_cache_file ) )
           FileUtils.mkdir_p( @config.dir.src_cache )
-          @exec_helper.execute( "wget #{source} -O #{source_cache_file}" )
+          @exec_helper.execute( "wget --no-check-certificate #{source} -O #{source_cache_file}" )
         end
 
         FileUtils.cp( source_cache_file, source_file )
