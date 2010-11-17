@@ -115,7 +115,7 @@ module Cantiere
 
       @log.debug "Handling source '#{source}'..."
 
-      if ( source =~ %r{http://} or source =~ %r{ftp://} )
+      if ( source =~ %r{https?://} or source =~ %r{ftp://} )
         handle_remote_source( rpm_file, source )
       else
         handle_local_source( rpm_file, source )
